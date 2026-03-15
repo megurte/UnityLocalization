@@ -37,6 +37,9 @@ Example:
 
 The system supports formatted arguments using standard string formatting.
 
+Exapmle of table structure in Google Sheets:
+
+
 Example:
 
 ```csharp
