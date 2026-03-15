@@ -31,14 +31,14 @@ Example:
 
 | alias | EN | RU | JP |
 |------|------|------|------|
-| MENU_PLAY | Play | Играть | プレイ |
-| MENU_SETTINGS | Settings | Настройки | 設定 |
-| CARD_DAMAGE | Damage {0} | Урон {0} | ダメージ {0} |
+| menu_play | Play | Играть | プレイ |
+| menu_settings | Settings | Настройки | 設定 |
+| card_damage | Damage {0} | Урон {0} | ダメージ {0} |
 
 The system supports formatted arguments using standard string formatting.
 
 Exapmle of table structure in Google Sheets:
-
+// TODO
 
 Example:
 
@@ -59,3 +59,9 @@ UPM
 1. Create a Localization CSV
 Place the CSV file inside of `Resource` folder with directory: `Localization/loc` where loc is a csv file.
 You can specify path to your loc file by typing path to `LocalizationConstants` file and `LocalizationCsvPath` field.
+2. Add LocalizationTextContainer to GameObject with TextMeshPRO if you want to translate static text right after scene loading
+3. Use LocalizationProvider.Localize API to translate dynamic text in runtime. For instance if you want to set text `Card has {0} damage` write code like this
+```LocalizationProvider.Localize("card_damage", "10")```
+It returns string and put your argument to `{0}` setter
+4. Change language with `LocalizationProvider.SetLocalizationKey("FR")` command. It should apply to all cashed text immidiatly.
+5. You can get info about current text by calling `LocalizationProvider.CurrentLocaleKey` which returns string
