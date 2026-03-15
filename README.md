@@ -56,12 +56,172 @@ UPM
 
 ## Usage
 
-1. Create a Localization CSV
-Place the CSV file inside of `Resource` folder with directory: `Localization/loc` where loc is a csv file.
-You can specify path to your loc file by typing path to `LocalizationConstants` file and `LocalizationCsvPath` field.
-2. Add LocalizationTextContainer to GameObject with TextMeshPRO if you want to translate static text right after scene loading
-3. Use LocalizationProvider.Localize API to translate dynamic text in runtime. For instance if you want to set text `Card has {0} damage` write code like this
-```LocalizationProvider.Localize("card_damage", "10")```
-It returns string and put your argument to `{0}` setter
-4. Change language with `LocalizationProvider.SetLocalizationKey("FR")` command. It should apply to all cashed text immidiatly.
-5. You can get info about current text by calling `LocalizationProvider.CurrentLocaleKey` which returns string
+### 1. Create a Localization CSV file
+
+Create a CSV file that contains all localized strings.
+
+Example structure:
+
+```csv
+key,EN,FR,JP
+card_damage,Card has {0} damage,La carte a {0} dégâts,カードは{0}ダメージです
+start_game,Start Game,Démarrer le jeu,ゲーム開始
+```
+
+- `key` — unique identifier of the text
+- other columns represent supported languages
+- `{0}`, `{1}`, etc. are placeholders for runtime parameters
+
+#### File location
+
+The CSV file must be placed inside the **Resources** folder:
+
+```
+Assets/Resources/Localization/loc.csv
+```
+
+By default the system loads the file from:
+
+```
+Resources/Localization/loc.csv
+```
+
+If you want to change the path, open:
+
+```
+LocalizationConstants.cs
+```
+
+and modify the value of:
+
+```
+LocalizationCsvPath
+```
+
+---
+
+### 2. Localize static UI text
+
+To automatically localize **static UI text** when the scene loads:
+
+1. Add the **LocalizationTextContainer** component
+2. Attach it to a GameObject with **TextMeshPro** or **TextMeshProUGUI**
+
+Example hierarchy:
+
+```
+Button
+ └ Text (TextMeshProUGUI)
+     └ LocalizationTextContainer
+```
+
+In the component, specify the localization key:
+
+```
+Key = start_game
+```
+
+When the scene loads, the text will be automatically replaced with the localized value.
+
+---
+
+### 3. Localize dynamic text in code
+
+For dynamic text use:
+
+```csharp
+LocalizationProvider.Localize()
+```
+
+Example CSV entry:
+
+```csv
+card_damage,Card has {0} damage,La carte a {0} dégâts
+```
+
+C# usage:
+
+```csharp
+string text = LocalizationProvider.Localize("card_damage", "10");
+```
+
+Result:
+
+```
+Card has 10 damage
+```
+
+Arguments are automatically inserted into `{0}`, `{1}`, `{2}`, etc.
+
+Example with multiple parameters:
+
+```csharp
+LocalizationProvider.Localize("battle_result", playerName, score);
+```
+
+CSV:
+
+```csv
+battle_result,{0} scored {1} points
+```
+
+---
+
+### 4. Change language at runtime
+
+To change the current language:
+
+```csharp
+LocalizationProvider.SetLocalizationKey("FR");
+```
+
+After calling this method:
+
+- the language changes globally
+- all cached localized texts update automatically
+
+Language keys must match the CSV column names.
+
+Example:
+
+```
+EN
+FR
+JP
+RU
+```
+
+---
+
+### 5. Get the current language
+
+You can access the current language key using:
+
+```csharp
+string locale = LocalizationProvider.CurrentLocaleKey;
+```
+
+Example result:
+
+```
+EN
+```
+
+---
+
+### Example
+
+```csharp
+using TMPro;
+using UnityEngine;
+
+public class CardView : MonoBehaviour
+{
+    public TextMeshProUGUI damageText;
+
+    public void SetDamage(int damage)
+    {
+        damageText.text = LocalizationProvider.Localize("card_damage", damage);
+    }
+}
+```
