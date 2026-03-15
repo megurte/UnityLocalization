@@ -170,15 +170,6 @@ After calling this method:
 
 Language keys must match the CSV column names.
 
-Example:
-
-```
-EN
-FR
-JP
-RU
-```
-
 ---
 
 ### 5. Get the current language
@@ -188,13 +179,6 @@ You can access the current language key using:
 ```csharp
 string locale = LocalizationProvider.CurrentLocaleKey;
 ```
-
-Example result:
-
-```
-EN
-```
-
 ---
 
 ### Example
@@ -205,7 +189,7 @@ using UnityEngine;
 
 public class CardView : MonoBehaviour
 {
-    public TextMeshProUGUI damageText;
+    [SerializableField] private TextMeshProUGUI damageText;
 
     public void SetDamage(int damage)
     {
