@@ -102,23 +102,11 @@ LocalizationCsvPath
 
 ### 2. Localize static UI text
 
-To automatically localize **static UI text** when the scene loads:
-
-1. Add the **LocalizationTextContainer** component
-2. Attach it to a GameObject with **TextMeshPro** or **TextMeshProUGUI**
-
-Example hierarchy:
-
-```
-Button
- └ Text (TextMeshProUGUI)
-     └ LocalizationTextContainer
-```
-
+To automatically localize **static UI text** when the scene loads add the **LocalizationTextContainer** component to a GameObject with **TextMeshPro** or **TextMeshProUGUI**
 In the component, specify the localization key:
 
 ```
-Key = start_game
+alias = start_game
 ```
 
 When the scene loads, the text will be automatically replaced with the localized value.
